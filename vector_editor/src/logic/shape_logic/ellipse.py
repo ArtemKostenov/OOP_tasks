@@ -1,4 +1,4 @@
-from src.logic.shapes import Shape
+from src.logic.shape_logic.shapes import Shape
 from PySide6.QtGui import QPainterPath
 
 class Ellipse(Shape):
@@ -31,3 +31,14 @@ class Ellipse(Shape):
                 "stroke_width": self.pen().width()
             }
         }
+    
+    def set_geometry(self, start_point, end_point):
+        self.x = min(start_point.x(), end_point.x())
+        self.y = min(start_point.y(), end_point.y())
+        self.w = abs(end_point.x() - start_point.x())
+        self.h = abs(end_point.y() - start_point.y())
+
+        path = QPainterPath()
+        path.addEllipse(self.x, self.y, self.w, self.h)
+
+        self.setPath(path)

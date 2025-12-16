@@ -54,26 +54,30 @@ class VectorEditorWindow(QMainWindow):
 
         tools_layout = QVBoxLayout(tools_panel)
 
+        self.btn_select = QPushButton("Select")
         self.btn_line = QPushButton("Line")
         self.btn_rect = QPushButton("Rect")
         self.btn_ellipse = QPushButton("Ellipse")
 
+        self.btn_select.setCheckable(True)
         self.btn_line.setCheckable(True)
         self.btn_rect.setCheckable(True)
         self.btn_ellipse.setCheckable(True)
 
-        self.btn_line.setChecked(True)
+        self.btn_select.setChecked(True)
 
+        tools_layout.addWidget(self.btn_select)
         tools_layout.addWidget(self.btn_line)
         tools_layout.addWidget(self.btn_rect)
         tools_layout.addWidget(self.btn_ellipse)
         tools_layout.addStretch()
 
+        self.btn_select.clicked.connect(lambda: self.on_change_tool("select"))
         self.btn_line.clicked.connect(lambda: self.on_change_tool("line"))
         self.btn_rect.clicked.connect(lambda: self.on_change_tool("rect"))
         self.btn_ellipse.clicked.connect(lambda: self.on_change_tool("ellipse"))
 
-        self.current_tool = "line"
+        self.current_tool = "select"
 
         self.canvas = EditorCanvas()
 
@@ -85,16 +89,24 @@ class VectorEditorWindow(QMainWindow):
         print(f"Инструмент: {tool_name}")
 
         if tool_name == "line":
+            self.btn_select.setChecked(False)
             self.btn_line.setChecked(True)
             self.btn_rect.setChecked(False)
             self.btn_ellipse.setChecked(False)
         elif tool_name == "rect":
+            self.btn_select.setChecked(False)
             self.btn_line.setChecked(False)
             self.btn_rect.setChecked(True)
             self.btn_ellipse.setChecked(False)
-        else:
+        elif tool_name == "ellipse":
+            self.btn_select.setChecked(False)
             self.btn_line.setChecked(False)
             self.btn_rect.setChecked(False)
             self.btn_ellipse.setChecked(True)
+        else:
+            self.btn_select.setChecked(True)
+            self.btn_line.setChecked(False)
+            self.btn_rect.setChecked(False)
+            self.btn_ellipse.setChecked(False)
 
         self.canvas.set_tool(tool_name)

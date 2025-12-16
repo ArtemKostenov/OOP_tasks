@@ -1,4 +1,4 @@
-from src.logic.shapes import Shape
+from src.logic.shape_logic.shapes import Shape
 from PySide6.QtGui import QPainterPath
 
 class Line(Shape):
@@ -33,3 +33,15 @@ class Line(Shape):
                 "stroke_width": self().pen().width()
             }
         }
+    
+    def set_geometry(self, start_point, end_point):
+        self.x1 = start_point.x()
+        self.y1 = start_point.y()
+        self.x2 = end_point.x()
+        self.y2 = end_point.y()
+
+        path = QPainterPath()
+        path.moveTo(self.x1, self.y1)
+        path.lineTo(self.x2, self.y2)
+
+        self.setPath(path)

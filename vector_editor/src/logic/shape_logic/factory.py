@@ -1,6 +1,6 @@
-from src.logic.line import Line
-from  src.logic.rect import Rectangle
-from src.logic.ellipse import Ellipse
+from src.logic.shape_logic.line import Line
+from  src.logic.shape_logic.rect import Rectangle
+from src.logic.shape_logic.ellipse import Ellipse
 
 class ShapeFactory:
     @staticmethod

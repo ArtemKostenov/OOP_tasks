@@ -1,6 +1,7 @@
 from abc import ABC, abstractmethod
 from PySide6.QtWidgets import QGraphicsPathItem
 from PySide6.QtGui import QPen, QColor
+from PySide6.QtCore import QPointF
 
 class Shape(QGraphicsPathItem):
     def __init__(self, color: str = "black", stroke_width: int = 2):
@@ -28,6 +29,9 @@ class Shape(QGraphicsPathItem):
         pass
     @abstractmethod
     def to_dict(self) -> dict:
+        pass
+    @abstractmethod
+    def set_geometry(self, start_point: QPointF, end_point: QPointF):
         pass
 
     def set_active_color(self, color: str):
