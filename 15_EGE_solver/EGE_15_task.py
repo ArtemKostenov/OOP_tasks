@@ -19,7 +19,7 @@ class Interval:
 
 
 class LogicSolver:
-    def __init__(self, expression, intervals, search_range=(0, 100), step=0.5):
+    def __init__(self, expression, intervals, search_range=(0, 100), step=1.0):
         self.expression = expression
         self.intervals = {i.name: i for i in intervals} 
         self.search_range = search_range
