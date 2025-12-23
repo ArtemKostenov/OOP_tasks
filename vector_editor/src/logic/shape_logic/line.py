@@ -26,6 +26,7 @@ class Line(Shape):
     def to_dict(self) -> dict:
         return {
             "type": self.type_name,
+            "pos": [self.x(), self.y()],
             "props": {
                 "x1": self.x1, "y1": self.y1,
                 "x2": self.x2, "y2": self.y2,

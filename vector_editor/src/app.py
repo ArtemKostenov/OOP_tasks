@@ -1,5 +1,5 @@
 from PySide6.QtWidgets import QMainWindow, QMessageBox, QWidget, QHBoxLayout, QVBoxLayout, QFrame, QPushButton
-from PySide6.QtGui import QCloseEvent, QAction
+from PySide6.QtGui import QCloseEvent, QAction, QKeySequence
 from src.widgets.canvas import EditorCanvas
 
 class VectorEditorWindow(QMainWindow):
@@ -13,6 +13,7 @@ class VectorEditorWindow(QMainWindow):
         self._init_ui()
         
     def _init_ui(self):
+        self._setup_layout()
         self.statusBar().showMessage("Готов к работе") 
 
         menu = self.menuBar()
@@ -27,7 +28,17 @@ class VectorEditorWindow(QMainWindow):
         tool = self.addToolBar("Main Toolbar")
         tool.addAction(exit_action)
 
-        self._setup_layout()
+        group_action = QAction("Group", self)
+        group_action.setShortcut(QKeySequence("Ctrl+G"))
+        group_action.triggered.connect(self.canvas.group_selection)
+
+        ungroup_action = QAction("Ungroup", self)
+        ungroup_action.setShortcut(QKeySequence("Ctrl+U"))
+        ungroup_action.triggered.connect(self.canvas.ungroup_selection)
+
+        edit_menu = self.menuBar().addMenu("&Edit")
+        edit_menu.addAction(group_action)
+        edit_menu.addAction(ungroup_action)
 
     def closeEvent(self, event: QCloseEvent):
         print("Попытка закрыть окно")
