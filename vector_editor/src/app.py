@@ -1,6 +1,7 @@
 from PySide6.QtWidgets import QMainWindow, QMessageBox, QWidget, QHBoxLayout, QVBoxLayout, QFrame, QPushButton
 from PySide6.QtGui import QCloseEvent, QAction, QKeySequence
 from src.widgets.canvas import EditorCanvas
+from src.widgets.properties import PropertiesPanel
 
 class VectorEditorWindow(QMainWindow):
     def __init__(self):
@@ -39,6 +40,7 @@ class VectorEditorWindow(QMainWindow):
         edit_menu = self.menuBar().addMenu("&Edit")
         edit_menu.addAction(group_action)
         edit_menu.addAction(ungroup_action)
+
 
     def closeEvent(self, event: QCloseEvent):
         print("Попытка закрыть окно")
@@ -91,9 +93,13 @@ class VectorEditorWindow(QMainWindow):
         self.current_tool = "select"
 
         self.canvas = EditorCanvas()
+        self.canvas.scene.changed.connect(lambda: self.props_panel.on_selection_changed())
 
         main_layout.addWidget(tools_panel)
         main_layout.addWidget(self.canvas)
+        
+        self.props_panel = PropertiesPanel(self.canvas.scene)
+        main_layout.addWidget(self.props_panel)
 
     def on_change_tool(self, tool_name):
         self.current_tool = tool_name

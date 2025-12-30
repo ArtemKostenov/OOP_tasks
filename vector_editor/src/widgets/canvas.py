@@ -47,7 +47,7 @@ class EditorCanvas(QGraphicsView):
 
     def mouseMoveEvent(self, event):
         self.active_tool.mouse_move(event)
-
+        
     def group_selection(self):
         try:
             print("--Start--")

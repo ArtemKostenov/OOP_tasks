@@ -23,6 +23,11 @@ class Shape(QGraphicsPathItem):
         self.setFlag(QGraphicsPathItem.GraphicsItemFlag.ItemIsMovable)
         self.setFlag(QGraphicsPathItem.GraphicsItemFlag.ItemSendsGeometryChanges)
 
+    def set_stroke_width(self, width: int):
+        pen = self.pen()
+        pen.setWidth(width)
+        self.setPen(pen)
+
     @property
     @abstractmethod
     def type_name(self) -> str:

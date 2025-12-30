@@ -10,6 +10,11 @@ class Group(QGraphicsItemGroup):
 
         self.setHandlesChildEvents(True)
 
+    def set_stroke_width(self, width: int):
+        for child in self.childItems():
+            if isinstance(child, Shape):
+                child.set_stroke_width(width)
+
     @property
     def type_name(self) -> str:
         return "group"
