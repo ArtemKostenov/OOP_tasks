@@ -1,9 +1,11 @@
 from PySide6.QtWidgets import QGraphicsView, QGraphicsScene
 from PySide6.QtCore import Qt, QPointF
+from PySide6.QtGui import QUndoStack
 from src.logic.shape_logic.factory import ShapeFactory
 from src.logic.tools_logic.creation_tool import CreationTool
 from src.logic.tools_logic.selection_tool import SelectionTool
 from src.logic.shape_logic.group import Group
+from src.logic.commands.commands import DeleteCommand
 
 class EditorCanvas(QGraphicsView):
     def __init__(self):
@@ -18,11 +20,14 @@ class EditorCanvas(QGraphicsView):
         
         self.scene.setBackgroundBrush(Qt.white)
 
+        self.undo_stack = QUndoStack(self)
+        self.undo_stack.setUndoLimit(50)
+
         self.tools = {
-            "select": SelectionTool(self),
-            "line": CreationTool(self, "line"),
-            "rect": CreationTool(self, "rect"),
-            "ellipse": CreationTool(self, "ellipse")
+            "select": SelectionTool(self, self.undo_stack),
+            "line": CreationTool(self, "line", self.undo_stack),
+            "rect": CreationTool(self, "rect", self.undo_stack),
+            "ellipse": CreationTool(self, "ellipse", self.undo_stack)
         }
 
         self.active_tool = self.tools["select"]
@@ -71,3 +76,16 @@ class EditorCanvas(QGraphicsView):
             if isinstance(item, Group):
                 self.scene.destroyItemGroup(item)
                 print("Group is ungrouped")
+
+    def delete_selected(self):
+        selected = self.scene.selectedItems()
+        if not selected:
+            return
+        
+        self.undo_stack.beginMacro("Delete Selected")
+
+        for item in selected:
+            cmd = DeleteCommand(self.scene, item)
+            self.undo_stack.push(cmd)
+        
+        self.undo_stack.endMacro()

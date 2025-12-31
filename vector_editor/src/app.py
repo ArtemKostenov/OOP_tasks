@@ -36,11 +36,26 @@ class VectorEditorWindow(QMainWindow):
         ungroup_action = QAction("Ungroup", self)
         ungroup_action.setShortcut(QKeySequence("Ctrl+U"))
         ungroup_action.triggered.connect(self.canvas.ungroup_selection)
+        
+        stack = self.canvas.undo_stack
+
+        undo_action = stack.createUndoAction(self, "&Undo")
+        undo_action.setShortcut(QKeySequence.Undo)
+
+        redo_action = stack.createRedoAction(self, "&Redo")
+        redo_action.setShortcut(QKeySequence.Redo)
+
+        delete_action = QAction("Delete", self)
+        delete_action.setShortcut("Delete")
+        delete_action.triggered.connect(self.canvas.delete_selected)
+        self.addAction(delete_action)
 
         edit_menu = self.menuBar().addMenu("&Edit")
         edit_menu.addAction(group_action)
         edit_menu.addAction(ungroup_action)
-
+        edit_menu.addAction(undo_action)
+        edit_menu.addAction(redo_action)
+        edit_menu.addAction(delete_action)
 
     def closeEvent(self, event: QCloseEvent):
         print("Попытка закрыть окно")
@@ -98,7 +113,7 @@ class VectorEditorWindow(QMainWindow):
         main_layout.addWidget(tools_panel)
         main_layout.addWidget(self.canvas)
         
-        self.props_panel = PropertiesPanel(self.canvas.scene)
+        self.props_panel = PropertiesPanel(self.canvas.scene, self.canvas.undo_stack)
         main_layout.addWidget(self.props_panel)
 
     def on_change_tool(self, tool_name):
