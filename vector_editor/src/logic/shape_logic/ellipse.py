@@ -24,7 +24,7 @@ class Ellipse(Shape):
     def to_dict(self) -> dict:
         return {
             "type": self.type_name,
-            "pos": [self.x(), self.y()],
+            "pos": [self.x, self.y],
             "props": {
                 "x": self.x, "y": self.y,
                 "h": self.h, "w": self.w,

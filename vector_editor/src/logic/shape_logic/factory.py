@@ -42,15 +42,18 @@ class ShapeFactory:
 
         if shape_type == "rect":
             color = props.get("color", "black")
-            obj = Rectangle(props['x'], props['y'], props['w'], props['h'], color)
+            width = props.get("stroke_width", 2)
+            obj = Rectangle(props['x'], props['y'], props['w'], props['h'], color, width)
 
         elif shape_type == "ellipse":
             color = props.get("color", "black") 
-            obj = Ellipse(props['x'], props['y'], props['w'], props['h'], color)
+            width = props.get("stroke_width", 2)
+            obj = Ellipse(props['x'], props['y'], props['w'], props['h'], color, width)
 
         elif shape_type == "line":
             color = props.get("color", "black")
-            obj = Line(props['x1'], props['y1'], props['x2'], props['y2'], color)
+            width = props.get("stroke_width", 2)
+            obj = Line(props['x1'], props['y1'], props['x2'], props['y2'], color, width)
 
         if "pos" in data:
             obj.setPos(data["pos"][0], data["pos"][1])

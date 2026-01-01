@@ -31,7 +31,7 @@ class Line(Shape):
                 "x1": self.x1, "y1": self.y1,
                 "x2": self.x2, "y2": self.y2,
                 "color": self.pen().color().name(),
-                "stroke_width": self().pen().width()
+                "stroke_width": self.pen().width()
             }
         }
     
